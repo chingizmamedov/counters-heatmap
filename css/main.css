@@ -81,6 +81,13 @@ body {
 	overflow-y: auto;
 }
 
+.navigation-list {
+	overflow: -moz-scrollbars-none;
+}
+.navigation-list::-webkit-scrollbar {
+	width: 0 !important;
+}
+
 .navigation-title {
 	margin-bottom: 25px;
 	color: #fff;

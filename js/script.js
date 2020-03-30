@@ -152,8 +152,6 @@ const switchOpenPoint = points => {
 							}
 						}
 					});
-					clearTimeout(timerId);
-					getCircle();
 				}
 			}
 		});
@@ -302,10 +300,10 @@ const getCircle = () => {
 			if (openPointId === result.id) {
 				drowUI(result.data);
 			}
-			clearTimeout(timerId);
-			clearTimeout(timerId);
-			clearTimeout(timerId);
-			clearTimeout(timerId);
+			for (let i = 0; i < 40; i++) {
+				console.log("i", i);
+				clearTimeout(timerId);
+			}
 			timerId = setTimeout(getCircle, 7000);
 		});
 	});
@@ -328,6 +326,10 @@ const getQueuesAction = () => {
 			document.getElementById("title").innerHTML = this.getAttribute(
 				"data-name",
 			);
+			for (let i = 0; i < 40; i++) {
+				clearTimeout(timerId);
+			}
+			getCircle();
 		};
 	});
 };
