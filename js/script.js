@@ -33,7 +33,7 @@ const trueNames = {
 		fullName: "Avg serving time",
 	},
 	walkDirect: {
-		name: "Walk",
+		name: "Walk direct",
 	},
 	noShow: {
 		name: "No show",
@@ -61,12 +61,16 @@ const topTable = [
 	"totalFreeTime",
 	"totalSessionTime",
 ];
-const BASE_URL = "http://192.168.1.69:8080/QmaticMap/";
+const BASE_URL = "http://10.0.22.36:8080/QmaticMap/";
 const GET_POINTS = "getServicePointsData?branchId=";
 const GET_DATA = "getCountersData";
 
 const urlParams = new URLSearchParams(window.location.search);
+
 const BRANCH_ID = urlParams.get("branch") || 1;
+
+console.log("url params", urlParams)
+console.log("url BRANCH_ID", BRANCH_ID)
 
 let pointsList = [];
 let cardData = {};
@@ -97,7 +101,7 @@ const fetchData = async () => {
 		},
 		body: JSON.stringify({
 			servicePointId: "" + openPointId + "",
-			branchId: "1",
+			branchId: BRANCH_ID,
 		}),
 	});
 	const data = await result.json();
@@ -251,8 +255,8 @@ const tHeadTop = `<thead>
     <td>Serving Time</td>
     <td>Free Time</td>
     <td>Free T.C.</td>
+    <td>Total session time</td>
     <td>Total Free Time</td>
-    <td>Total serving time</td>
 </tr>
 </thead>`;
 const drowQueues = () => {
@@ -297,12 +301,13 @@ const getCircle = () => {
 			if (openPointId === result.id) {
 				drowUI(result.data);
 			}
+clearTimeout(timerId);
+		timerId = setTimeout(getCircle, 7000);
 		});
 	});
 
 	Promise.all([fetchPoints, fetchPoints]).then(response => {
-		clearTimeout(timerId);
-		timerId = setTimeout(getCircle, 7000);
+		
 	});
 };
 
