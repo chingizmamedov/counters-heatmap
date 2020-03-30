@@ -61,7 +61,7 @@ const topTable = [
 	"totalFreeTime",
 	"totalSessionTime",
 ];
-const BASE_URL = "http://10.0.22.36:8080/QmaticMap/";
+const BASE_URL = "http://192.168.1.69:8080/QmaticMap/";
 const GET_POINTS = "getServicePointsData?branchId=";
 const GET_DATA = "getCountersData";
 
@@ -69,8 +69,8 @@ const urlParams = new URLSearchParams(window.location.search);
 
 const BRANCH_ID = urlParams.get("branch") || 1;
 
-console.log("url params", urlParams)
-console.log("url BRANCH_ID", BRANCH_ID)
+console.log("url params", urlParams);
+console.log("url BRANCH_ID", BRANCH_ID);
 
 let pointsList = [];
 let cardData = {};
@@ -198,6 +198,7 @@ const drowPoints = points => {
 	});
 	document.getElementsByClassName("navigation-list")[0].innerHTML = pointsItems;
 };
+
 const card = item => {
 	return `
     <div class="card-item">
@@ -301,13 +302,12 @@ const getCircle = () => {
 			if (openPointId === result.id) {
 				drowUI(result.data);
 			}
-clearTimeout(timerId);
-		timerId = setTimeout(getCircle, 7000);
+			clearTimeout(timerId);
+			clearTimeout(timerId);
+			clearTimeout(timerId);
+			clearTimeout(timerId);
+			timerId = setTimeout(getCircle, 7000);
 		});
-	});
-
-	Promise.all([fetchPoints, fetchPoints]).then(response => {
-		
 	});
 };
 
@@ -340,12 +340,8 @@ menuBtn.onclick = function() {
 	aside.classList.toggle("aside-active");
 	asideBack.classList.toggle("aside-back-active");
 
-	const itemBudge = document.querySelectorAll(".navigation-item-badge");
-	Object.keys(itemBudge).forEach(item => {
-		itemBudge[item].classList.toggle("navigation-item-badge-active");
-		clearTimeout(timerId);
-		getCircle();
-	});
+	// this.parentElement.classList.toggle("aside-active");
+	console.log(this.parentElement);
 };
 
 asideBack.onclick = function() {
