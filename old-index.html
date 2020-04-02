@@ -1,0 +1,130 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="libs/normalize.css" />
+		<link rel="stylesheet" href="libs/bootstrap-grid.css" />
+		<link rel="stylesheet" href="css/main.css" />
+		<title>Document</title>
+	</head>
+
+	<body>
+		<div class="aside-back"></div>
+		<header class="header d-flex align-items-center flex-column">
+			<div class="header-content d-flex justify-content-between">
+				<div class="header-left d-flex align-items-center">
+					<div class="logo">
+						<img src="assets/icon/company_logo_header.png" alt="" />
+					</div>
+				</div>
+				<div class="header-center">
+					<h1 id="branch-mame" class="brach-name"></h1>
+				</div>
+				<div class="header-right d-flex align-items-center">
+					<div class="d-flex flex-column align-items-end mb-2">
+						<p id="username" class="question-text">Super Administrator</p>
+						<p>
+							<a
+								style="color: #c4c4c4;"
+								href="/logout.jsp"
+								onclick="return qmatic.common.logout();"
+								>Logout</a
+							>
+						</p>
+					</div>
+					<a class="home" href="/">
+						<img src="assets/images/home.png" alt="home" />
+					</a>
+				</div>
+			</div>
+		</header>
+		<div class="content-wrap">
+			<div class="d-flex">
+				<aside class="aside aside-active">
+					<div id="aside-close">
+						<img src="assets/icon/close.svg" alt="" />
+					</div>
+					<div class="menu-btn">
+						<img src="assets/icon/menu-icon.svg" alt="" />
+					</div>
+					<nav class="navigation">
+						<h2 class="navigation-title">Service Point</h2>
+						<ul class="navigation-list"></ul>
+					</nav>
+				</aside>
+				<div class="content">
+					<div id="tablewrap-top" class="table-wrap">
+						<h2 id="title" class="title">Total</h2>
+						<div id="table-top-preloader" class="table-preloader"></div>
+						<div class="table-scroller">
+							<table id="table-top" class="table">
+								<thead>
+									<tr>
+										<td>Name</td>
+										<td>served</td>
+										<td>walkDirect</td>
+										<td>noShow</td>
+										<td>rejected</td>
+										<td>averageServingTime</td>
+										<td>totalServingTime</td>
+									</tr>
+								</thead>
+								<tbody id="tbody"></tbody>
+							</table>
+						</div>
+					</div>
+					<div class="cards d-flex justify-content-between">
+						<div class="card-item card-item-preloader">
+							<p>Card</p>
+							<p>00:00:00</p>
+						</div>
+						<div class="card-item card-item-preloader">
+							<p>Card</p>
+							<p>00:00:00</p>
+						</div>
+						<div class="card-item card-item-preloader">
+							<p>Card</p>
+							<p>00:00:00</p>
+						</div>
+						<div class="card-item card-item-preloader">
+							<p>Card</p>
+							<p>00:00:00</p>
+						</div>
+						<div class="card-item card-item-preloader">
+							<p>Card</p>
+							<p>00:00:00</p>
+						</div>
+						<div class="card-item card-item-preloader">
+							<p>Card</p>
+							<p>00:00:00</p>
+						</div>
+					</div>
+					<div id="tablewrap-queue" class="table-wrap">
+						<h2 id="title" class="title">Services</h2>
+						<div id="table-preloader" class="table-preloader"></div>
+						<div class="table-scroller">
+							<table id="table" class="table">
+								<thead>
+									<tr>
+										<td>Name</td>
+										<td>served</td>
+										<td>walkDirect</td>
+										<td>noShow</td>
+										<td>rejected</td>
+										<td>averageServingTime</td>
+										<td>totalServingTime</td>
+									</tr>
+								</thead>
+								<tbody id="tbody"></tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="js/script.js"></script>
+	</body>
+</html>
