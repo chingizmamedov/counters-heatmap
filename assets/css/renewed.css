@@ -314,7 +314,7 @@ th:not(:first-child) {
 	top: 12px;
 }
 .circle-online {
-	color: rgb(44, 158, 120) !important;
+	color: #19f000 !important;
 }
 .circle-offline {
 	color: #a0a0a0 !important;
