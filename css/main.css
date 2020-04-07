@@ -315,7 +315,7 @@ body {
 
 .table td {
 	padding: 12px 10px;
-	background: #fff;
+	/* background: #fff; */
 }
 
 .table td:not(:first-child) {
@@ -323,8 +323,8 @@ body {
 }
 
 .table tr:nth-child(2n) td {
-	background: #b16474;
-	color: #fff;
+	/* background: #b16474;
+	color: #fff; */
 }
 
 .table-preloader {
