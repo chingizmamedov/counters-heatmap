@@ -3,66 +3,53 @@ const trueNames = {
 	serviceName: {
 		name: "Service name",
 		fullName: "Ticket count",
-		icon: "fa-bookmark",
 	},
 	ticketNo: {
 		name: "Ticked nomer",
 		fullName: "Served customer count",
-		icon: "fa-bookmark",
 	},
 	servingTime: {
 		name: "Serving time",
 		fullName: "Waiting customer count",
-		icon: "fa-bookmark",
 	},
 	freeTime: {
 		name: "Free time",
 		fullName: "Noshow count",
-		icon: "fa-bookmark",
 	},
 	freeTC: {
 		name: "Free TC",
 		fullName: "Reject count",
-		icon: "fa-bookmark",
 	},
 	totalSessionTime: {
 		name: "TST",
 		fullName: "Removed customer count",
-		icon: "fa-bookmark",
 	},
 	totalFreeTime: {
 		name: "TFT",
 		fullName: "Avg waiting time",
-		icon: "fa-bookmark",
 	},
 	served: {
 		name: "Served",
 		fullName: "Avg serving time",
-		icon: "fa-bookmark",
 	},
 	walkDirect: {
 		name: "Walk direct",
-		icon: "fa-bookmark",
 	},
 	noShow: {
 		name: "No show",
 		fullName: "Max serving time",
-		icon: "fa-bookmark",
 	},
 	rejected: {
 		name: "Rejeceted",
 		fullName: "First ticket time",
-		icon: "fa-bookmark",
 	},
 	averageServingTime: {
 		name: "AST",
 		fullName: "Last ticket time",
-		icon: "fa-bookmark",
 	},
 	totalServingTime: {
 		name: "TST",
 		fullName: "Last ticket time",
-		icon: "fa-bookmark",
 	},
 };
 const topTable = [
@@ -70,17 +57,13 @@ const topTable = [
 	"ticketNo",
 	"servingTime",
 	"freeTime",
+	"freeTC",
+	"totalFreeTime",
 	"totalSessionTime",
 ];
-const additionalBottomcards = ["totalFreeTime", "freeTC"];
-
 const BASE_URL = "http://192.168.1.69:8080/QmaticMap/";
 const GET_POINTS = "getServicePointsData?branchId=";
 const GET_DATA = "getCountersData";
-
-const NAVIGATION_LIST = document.getElementById("nav-list");
-const cardListTop = document.getElementById("card-list-top");
-const cardListBottom = document.getElementById("card-list-bottom");
 
 const urlParams = new URLSearchParams(window.location.search);
 
@@ -186,102 +169,52 @@ const showLoader = () => {
 	tableTop.innerHTML = "";
 	table.innerHTML = "";
 };
-
 /**
+ *
  * drowers
  */
-
-const pointClass = (servicePointId, openPointId, status) =>
-	`class="nav-link ${
-		servicePointId == openPointId ? "active show selected" : "disable"
-	}"`;
-const pointIcon = (status) =>
-	`<i class="fa fa-circle text-success circle-status ${
-		status === "OPEN" || status === "STORE_NEXT" ? "circle-online" : ""
-	}"></i>`;
-const pointHTML = ({
-	servicePointId,
-	name,
-	status,
-	staffFullName,
-}) => `<li class="nav-item">
-			<a 
-				data-name="${staffFullName}"
-				data-id="${servicePointId}"
-				${pointClass(servicePointId, openPointId, status)}
-				data-toggle="tab" 
-				href="#tab-j_1">
-				${pointIcon(status)}
-				${name}
-			</a>
-		</li>`;
 const point = ({ servicePointId, name, status, staffFullName }) => {
-	return pointHTML({ servicePointId, name, status, staffFullName });
+	return `<li data-name="${staffFullName}" data-id="${servicePointId}" class="navigation-item ${
+		servicePointId == openPointId ? "navigation-item-active" : ""
+	} ${
+		status === "OPEN" || status === "STORE_NEXT"
+			? "navigation-item-open"
+			: "navigation-item-closed"
+	}">${name} <div class="navigation-item-badge navigation-item-badge-active"><span>${name
+		.slice(-2)
+		.trim()}</span></div></li>`;
 };
 
 const drowPoints = (points) => {
-	NAVIGATION_LIST.innerHTML = points.map((item) => point({ ...item })).join("");
+	console.log("points", points);
+	let pointsItems = ``;
+	points.forEach((item) => {
+		pointsItems += point({ ...item });
+	});
+	document.getElementsByClassName("navigation-list")[0].innerHTML = pointsItems;
 };
 
-const cardName = (cardData, item) =>
-	`${
-		cardData[item] === null
-			? "no data"
-			: cardData[item].length > 10
-			? cardData[item].slice(0, 10) + "..."
-			: cardData[item]
-	}`;
-
-const cardWrap = (cardInner) => `
-	<div class="card col-3 top-card top-card-active" id="customersWaiting-wrap">
-		<div class="card-body">
-			<div class="row">
-				${cardInner}
-				<div class="col-12">
-					<div class="progress mt-3 mb-1" style="height: 6px;">
-						<div class="progress-bar bg-success" role="progressbar" style="width: 83%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	`;
-
-const card = (name, number, icon) =>
-	cardWrap(`
-		<div class="col-12">
-			<p class="card-subtitle text-muted fw-500">
-				${name}
-			</p>
-			<h3 class="text-success mt-2" id="customersWaiting">
-				${number !== null ? number : "no"}
-			</h3>
-			<div class="left-card-icon">
-				<i class="fa ${icon}" aria-hidden="true"></i>
-			</div>
-		</div>
-	`);
-
+const card = (item) => {
+	return `
+    <div class="card-item">
+        <p>${trueNames[item].name}</p>
+        <span>${
+					cardData[item] === null
+						? "no data"
+						: cardData[item].length > 10
+						? cardData[item].slice(0, 10) + "..."
+						: cardData[item]
+				}</span>
+    </div>
+    `;
+};
 const drowCards = () => {
-	console.log("drowCards -> cardData", cardData);
-	// return;
-	const cardKey = Object.keys(cardData);
-	cardListTop.innerHTML = cardKey
-		.map((item, index) =>
-			index < 4
-				? card(trueNames[item].name, cardData[item], trueNames[item].icon)
-				: null,
-		)
-		.join("");
-	cardListBottom.innerHTML = cardKey
-		.map((item, index) =>
-			index > 3
-				? card(trueNames[item].name, cardData[item], trueNames[item].icon)
-				: null,
-		)
-		.join("");
+	let cards = ``;
+	Object.keys(cardData).forEach((item) => {
+		cards += card(item);
+	});
+	document.getElementsByClassName("cards")[0].innerHTML = cards;
 };
-
 const queue = (item) => {
 	return `
 		<tr>
@@ -297,7 +230,7 @@ const queue = (item) => {
 };
 
 const topQueue = (item) => {
-	return `<td>${topData[item] !== null ? topData[item] : "---"}</td>`;
+	return `<td>${topData[item]}</td>`;
 };
 
 const tHead = `<thead>
@@ -313,11 +246,13 @@ const tHead = `<thead>
 </thead>`;
 const tHeadTop = `<thead>
 <tr>
-    <td>Service name</td>
+    <td>Service</td>
     <td>Ticket No</td>
     <td>Serving Time</td>
     <td>Free Time</td>
+    <td>Free T.C.</td>
     <td>Total session time</td>
+    <td>Total Free Time</td>
 </tr>
 </thead>`;
 const drowQueues = () => {
@@ -325,7 +260,6 @@ const drowQueues = () => {
 	listData.forEach((item) => {
 		queues += queue(item);
 	});
-	// return;
 	queues === ""
 		? (document.getElementById("table").innerHTML =
 				"<h3>There are no services</h3>")
@@ -337,14 +271,13 @@ const drowQueues = () => {
 
 const drowQueuesTop = () => {
 	let queues = `<tr>`;
-	console.log("drowQueuesTop -> topData", topData);
 	Object.keys(topData).forEach((item) => {
-		topTable.includes(item) ? (queues += topQueue(item)) : null;
+		queues += topQueue(item);
 	});
 	queues += "</tr>";
+
 	document.getElementById("table-top").innerHTML =
 		tHeadTop + "<tbody>" + queues + "</tbody>";
-
 	document.getElementById("table-top-preloader").style.display = "none";
 	document.getElementById("table-top").style.display = "table";
 };
@@ -365,10 +298,10 @@ const getCircle = () => {
 				drowUI(result.data);
 			}
 			for (let i = 0; i < 40; i++) {
-				// console.log("i", i);
+				console.log("i", i);
 				clearTimeout(timerId);
 			}
-			// timerId = setTimeout(getCircle, 7000);
+			timerId = setTimeout(getCircle, 7000);
 		});
 	});
 };
@@ -397,3 +330,16 @@ const getQueuesAction = () => {
 		};
 	});
 };
+
+// const asideBack = document.getElementsByClassName("aside-back")[0];
+// const aside = document.getElementsByClassName("aside")[0];
+// const asideClose = document.getElementById("aside-close");
+
+// asideBack.onclick = function() {
+// 	aside.classList.toggle("aside-active");
+// 	asideBack.classList.toggle("aside-back-active");
+// 	const itemBudge = document.querySelectorAll(".navigation-item-badge");
+// 	Object.keys(itemBudge).forEach(item => {
+// 		itemBudge[item].classList.toggle("navigation-item-badge-active");
+// 	});
+// };

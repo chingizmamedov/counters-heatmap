@@ -105,24 +105,6 @@ body {
 	position: relative;
 }
 
-.navigation-item-open {
-	background: #245aee;
-	color: #fff;
-}
-
-.navigation-item-active {
-	background: #8bc34a;
-	pointer-events: none;
-}
-
-.navigation-item-closed {
-	pointer-events: none;
-	color: rgba(255, 255, 255, 0.534);
-	-webkit-box-shadow: none;
-	box-shadow: none;
-	background-color: #b1b1b1;
-}
-
 .navigation-item-badge {
 	position: absolute;
 	right: 10px;

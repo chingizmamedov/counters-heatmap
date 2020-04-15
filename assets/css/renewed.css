@@ -294,6 +294,9 @@ th:not(:first-child) {
 .nav-link {
 	position: relative;
 }
+.nav-link.disable {
+	pointer-events: none;
+}
 .content {
 	padding-left: 30px;
 	padding-right: 30px;
