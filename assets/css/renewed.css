@@ -284,6 +284,11 @@ th:not(:first-child) {
 	margin-right: -2px;
 	max-height: 41px;
 }
+#counter-list,
+#department-list {
+	max-height: 20vh;
+	overflow-y: auto;
+}
 .nav-tabs .nav-item.show .nav-link,
 .nav-tabs .nav-link.active {
 	border-width: 1px;
@@ -334,4 +339,7 @@ th:not(:first-child) {
 }
 .circle-offline {
 	color: #a0a0a0 !important;
+}
+.no-data {
+	display: none;
 }

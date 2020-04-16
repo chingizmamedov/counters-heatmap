@@ -72,11 +72,13 @@ const topTable = [
 	"freeTime",
 	"totalSessionTime",
 ];
+const nameTips = ["kassa", "emeliyyat", "huquqi", "satish", "rehberlik"];
 const additionalBottomcards = ["totalFreeTime", "freeTC"];
-
+const mainLink = "/heatmap";
 const BASE_URL = "http://192.168.1.69:8080/QmaticMap/";
 const GET_POINTS = "getServicePointsData?branchId=";
 const GET_DATA = "getCountersData";
+const QMATIC_GET_PERCENT = "getMapPercentData";
 
 const NAVIGATION_LIST = document.getElementById("nav-list");
 const cardListTop = document.getElementById("card-list-top");
@@ -141,6 +143,19 @@ const parseData = (params) => {
 
 const switchOpenPoint = (points) => {
 	pointsList = points;
+	console.log("switchOpenPoint -> points", points);
+	let isEmptyAllPoints = points.some(
+		(element) => element.status === "OPEN" || element.status === "STORE_NEXT",
+	);
+	console.log("switchOpenPoint -> isEmptyAllPoints", isEmptyAllPoints);
+	if (isEmptyAllPoints === false) {
+		const queuesItems = document.getElementsByClassName("nav-link");
+		Object.keys(queuesItems).forEach((item) => {
+			queuesItems[item].classList.remove("active", "show", "selected");
+		});
+		document.getElementById("title").innerHTML = "No active service point";
+		return;
+	}
 	if (firstLoad) {
 		let isFinded = false;
 		points.forEach((point) => {
@@ -148,7 +163,7 @@ const switchOpenPoint = (points) => {
 				if (point.status === "OPEN") {
 					isFinded = true;
 					openPointId = point.servicePointId;
-					document.getElementById("title").innerHTML = point.staffFullName;
+					senTrueName(point.staffFullName);
 				}
 			}
 		});
@@ -163,6 +178,7 @@ const switchOpenPoint = (points) => {
 							if (point.status === "OPEN") {
 								isFinded = true;
 								openPointId = point.servicePointId;
+								senTrueName(point.staffFullName);
 							}
 						}
 					});
@@ -173,12 +189,12 @@ const switchOpenPoint = (points) => {
 };
 
 const showLoader = () => {
-	const cardsWrap = document.getElementsByClassName("cards")[0];
 	const tablePreloader = document.getElementById("table-preloader");
 	const tablePreloaderTop = document.getElementById("table-top-preloader");
 	const table = document.getElementById("table");
 	const tableTop = document.getElementById("table-top");
-	cardsWrap.innerHTML = `<div class="card-item card-item-preloader"><p>Card</p><p>00:00:00</p></div><div class="card-item card-item-preloader"><p>Card</p><p>00:00:00</p></div><div class="card-item card-item-preloader"><p>Card</p><p>00:00:00</p></div><div class="card-item card-item-preloader"><p>Card</p><p>00:00:00</p></div><div class="card-item card-item-preloader"><p>Card</p><p>00:00:00</p></div><div class="card-item card-item-preloader"><p>Card</p><p>00:00:00</p></div>`;
+	cardListTop.innerHTML = `<div class="card-item card-item-preloader"><p>Card</p><p>00:00:00</p></div><div class="card-item card-item-preloader"><p>Card</p><p>00:00:00</p></div><div class="card-item card-item-preloader"><p>Card</p><p>00:00:00</p></div><div class="card-item card-item-preloader"><p>Card</p><p>00:00:00</p></div><div class="card-item card-item-preloader"><p>Card</p><p>00:00:00</p></div><div class="card-item card-item-preloader"><p>Card</p><p>00:00:00</p></div>`;
+	cardListBottom.innerHTML = `<div class="card-item card-item-preloader"><p>Card</p><p>00:00:00</p></div><div class="card-item card-item-preloader"><p>Card</p><p>00:00:00</p></div><div class="card-item card-item-preloader"><p>Card</p><p>00:00:00</p></div><div class="card-item card-item-preloader"><p>Card</p><p>00:00:00</p></div><div class="card-item card-item-preloader"><p>Card</p><p>00:00:00</p></div><div class="card-item card-item-preloader"><p>Card</p><p>00:00:00</p></div>`;
 	tablePreloader.style.display = "block";
 	tablePreloaderTop.style.display = "block";
 	table.style.display = "none";
@@ -193,7 +209,11 @@ const showLoader = () => {
 
 const pointClass = (servicePointId, openPointId, status) =>
 	`class="nav-link ${
-		servicePointId == openPointId ? "active show selected" : "disable"
+		servicePointId == openPointId
+			? "active show selected"
+			: status === "OPEN" || status === "STORE_NEXT"
+			? ""
+			: "disable"
 	}"`;
 const pointIcon = (status) =>
 	`<i class="fa fa-circle text-success circle-status ${
@@ -263,8 +283,6 @@ const card = (name, number, icon) =>
 	`);
 
 const drowCards = () => {
-	console.log("drowCards -> cardData", cardData);
-	// return;
 	const cardKey = Object.keys(cardData);
 	cardListTop.innerHTML = cardKey
 		.map((item, index) =>
@@ -368,7 +386,7 @@ const getCircle = () => {
 				// console.log("i", i);
 				clearTimeout(timerId);
 			}
-			// timerId = setTimeout(getCircle, 7000);
+			timerId = setTimeout(getCircle, 7000);
 		});
 	});
 };
@@ -377,19 +395,37 @@ getCircle();
 
 //action UI
 
+const senTrueName = (oldname) => {
+	let emalName = oldname.split(" ");
+
+	let nameIndex = -1;
+	let find = emalName.filter((element, index) => {
+		let isFind = nameTips.includes(element.toLowerCase());
+		isFind ? (nameIndex = index) : null;
+		return isFind;
+	});
+	let firstNameWord = Number(oldname[0]);
+
+	nameIndex > 0 ? emalName.splice(nameIndex, 0, "-") : null;
+	!isNaN(firstNameWord) ? emalName.splice(1, 0, "-") : null;
+	emalName = emalName.join(" ");
+	document.getElementById("title").innerHTML = emalName;
+};
+
 const getQueuesAction = () => {
-	const queuesItems = document.getElementsByClassName("navigation-item");
+	const queuesItems = document.getElementsByClassName("nav-link");
 	Object.keys(queuesItems).forEach((item) => {
-		queuesItems[item].onclick = function () {
+		queuesItems[item].onclick = function (e) {
+			e.preventDefault();
 			openPointId = this.getAttribute("data-id");
 			showLoader();
 			Object.keys(queuesItems).forEach((item) => {
-				queuesItems[item].classList.remove("navigation-item-active");
+				queuesItems[item].classList.remove("active", "show", "selected");
 			});
-			this.classList.add("navigation-item-active");
-			document.getElementById("title").innerHTML = this.getAttribute(
-				"data-name",
-			);
+			this.classList.add("active", "show", "selected");
+			let superName = this.getAttribute("data-name");
+			senTrueName(superName);
+
 			for (let i = 0; i < 40; i++) {
 				clearTimeout(timerId);
 			}
@@ -397,3 +433,174 @@ const getQueuesAction = () => {
 		};
 	});
 };
+
+/***
+ * cusotm search
+ */
+
+const getMapPercentData = async () => {
+	const response = await fetch(BASE_URL + QMATIC_GET_PERCENT);
+	const data = await response.json();
+	return data;
+};
+
+const inputElement = document.getElementById("search-td");
+const searchList = document.getElementById("search-list");
+
+getMapPercentData().then((response) => {
+	drowSearchsItems(response);
+});
+
+function setActionsForListItem() {
+	const listForAction = document.getElementsByClassName("list-group-item");
+	const branchesLists = document.querySelectorAll(".link-item");
+	// console.log("setActionsForListItem -> branchesLists", branchesLists);
+	Object.keys(branchesLists).forEach((item) => {
+		branchesLists[item].onclick = function (e) {
+			console.log(
+				"branchesLists[item].onclick -> e.event.target",
+				e.event.target,
+			);
+		};
+	});
+	Object.keys(listForAction).forEach((item) => {
+		listForAction[item].onclick = function () {
+			inputValue = this.getAttribute("data-name");
+			var reg = new RegExp(inputValue, "i");
+			regValue = reg;
+			inputLength = inputValue.length;
+
+			deleteBranches();
+			if (whichShown === "time") {
+				drowBranchesTime(responseAllFilials);
+				drowBranchesTimeBaku(responseBakuFiliasl);
+			} else {
+				drowBranchesPercent(responseAllFilials);
+				drowBranchesPercentBaku(responseBakuFiliasl);
+			}
+		};
+	});
+}
+
+function drowSearchsItems(data) {
+	let items = `<a class="dropdown-item counters-item no-data" href="#">No data found</a>`,
+		counterItems = `<a class="dropdown-item counters-item no-data" href="#">No data found</a>`,
+		departmentItems = `<a class="dropdown-item counters-item no-data" href="#">No data found</a>`;
+
+	data.forEach((dataItem) => {
+		let item = ``,
+			counterItem = ``,
+			departmentItem = ``;
+		item += `<div class="list-group-item" data-id="${dataItem.id}" data-name="${dataItem.name}">
+					<span>${dataItem.name}</span>
+				</div>`;
+		counterItem += `<a class="dropdown-item counters-item link-item" href="${mainLink}/counters/${dataItem.id}"  data-name="${dataItem.name}">${dataItem.name}</a>`;
+		departmentItem += `<a class="dropdown-item  departments-item link-item" href="${mainLink}/departments/${dataItem.id}"  data-name="${dataItem.name}">${dataItem.name}</a>`;
+		items += item;
+		counterItems += counterItem;
+		departmentItems += departmentItem;
+	});
+
+	document.getElementById("counter-list").innerHTML = counterItems;
+	document.getElementById("department-list").innerHTML = departmentItems;
+	setActionsForListItem();
+}
+
+const setNoData = (list, regExp, searchType) => {
+	let noDatas = document.querySelectorAll(".no-data");
+	noDatas.forEach((item) => (item.style.display = "none"));
+
+	const listBool = Object.values(list).some((item) =>
+		regExp.test(item.getAttribute("data-name")),
+	);
+	if (searchType == "counters") {
+		!listBool
+			? (document
+					.getElementById("counter-list")
+					.querySelector(".no-data").style.display = "block")
+			: null;
+	} else if (searchType == "departments") {
+		!listBool
+			? (document
+					.getElementById("department-list")
+					.querySelector(".no-data").style.display = "block")
+			: null;
+	} else {
+		!listBool
+			? (document
+					.getElementById("department-list")
+					.querySelector(".no-data").style.display = "block")
+			: null;
+	}
+};
+
+function showNeedListItem(value, searchType) {
+	let listItems;
+	if (searchType == "counters") {
+		listItems = document.getElementsByClassName("counters-item");
+	} else if (searchType == "departments") {
+		listItems = document.getElementsByClassName("departments-item");
+	} else {
+		listItems = document.getElementsByClassName("list-group-item");
+	}
+
+	var reg = new RegExp(value, "i");
+	Object.keys(listItems).forEach((item) => {
+		let name = listItems[item].getAttribute("data-name");
+		if (reg.test(name)) {
+			listItems[item].style.display = "block";
+		} else {
+			listItems[item].style.display = "none";
+		}
+	});
+	setNoData(listItems, reg, searchType);
+}
+
+const COUNTER_INPUT = document.getElementById("counter-input");
+const DEPARTMENT_INPUT = document.getElementById("department-input");
+
+$(function () {
+	$("#search").on("input", function (e) {
+		const VAL = this.value;
+		showNeedListItem(VAL);
+		if (VAL.length < 1) {
+			searchList.style.transform = "scaleY(0)";
+			var reg = new RegExp("", "i");
+			regValue = reg;
+			deleteBranches();
+			if (whichShown === "time") {
+				drowBranchesTime(responseAllFilials);
+				drowBranchesTimeBaku(responseBakuFiliasl);
+			} else {
+				drowBranchesPercent(responseAllFilials);
+				drowBranchesPercentBaku(responseBakuFiliasl);
+			}
+		}
+	});
+
+	COUNTER_INPUT.onfocusin = function () {
+		$(this).parent().siblings("#counter-list").show();
+	};
+
+	COUNTER_INPUT.onfocusout = function () {
+		$(this).parent().siblings("#counter-list").hide();
+	};
+
+	DEPARTMENT_INPUT.onfocusin = function () {
+		$(this).parent().siblings("#department-list").show();
+	};
+
+	DEPARTMENT_INPUT.onfocusout = function () {
+		$(this).parent().siblings("#department-list").hide();
+	};
+
+	$("#counter-input").on("input", function (e) {
+		const VAL = this.value;
+		showNeedListItem(VAL, "counters");
+	});
+
+	$("#department-input").on("input", function (e) {
+		const VAL = this.value;
+		showNeedListItem(VAL, "departments");
+	});
+});
