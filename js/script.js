@@ -457,6 +457,8 @@ function setActionsForListItem() {
 	// console.log("setActionsForListItem -> branchesLists", branchesLists);
 	Object.keys(branchesLists).forEach((item) => {
 		branchesLists[item].onclick = function (e) {
+			COUNTER_INPUT.value = "";
+			DEPARTMENT_INPUT.value = "";
 			console.log(
 				"branchesLists[item].onclick -> e.event.target",
 				e.event.target,
@@ -494,8 +496,8 @@ function drowSearchsItems(data) {
 		item += `<div class="list-group-item" data-id="${dataItem.id}" data-name="${dataItem.name}">
 					<span>${dataItem.name}</span>
 				</div>`;
-		counterItem += `<a class="dropdown-item counters-item link-item" href="${mainLink}/counters/${dataItem.id}"  data-name="${dataItem.name}">${dataItem.name}</a>`;
-		departmentItem += `<a class="dropdown-item  departments-item link-item" href="${mainLink}/departments/${dataItem.id}"  data-name="${dataItem.name}">${dataItem.name}</a>`;
+		counterItem += `<a class="dropdown-item counters-item link-item" href="${mainLink}/counters/?branch=${dataItem.id}"  data-name="${dataItem.name}">${dataItem.name}</a>`;
+		departmentItem += `<a class="dropdown-item  departments-item link-item" href="${mainLink}/departments/?branch=${dataItem.id}"  data-name="${dataItem.name}">${dataItem.name}</a>`;
 		items += item;
 		counterItems += counterItem;
 		departmentItems += departmentItem;
@@ -582,16 +584,8 @@ $(function () {
 		$(this).parent().siblings("#counter-list").show();
 	};
 
-	COUNTER_INPUT.onfocusout = function () {
-		$(this).parent().siblings("#counter-list").hide();
-	};
-
 	DEPARTMENT_INPUT.onfocusin = function () {
 		$(this).parent().siblings("#department-list").show();
-	};
-
-	DEPARTMENT_INPUT.onfocusout = function () {
-		$(this).parent().siblings("#department-list").hide();
 	};
 
 	$("#counter-input").on("input", function (e) {
@@ -602,5 +596,17 @@ $(function () {
 	$("#department-input").on("input", function (e) {
 		const VAL = this.value;
 		showNeedListItem(VAL, "departments");
+	});
+
+	$.ajax({
+		url: "/rest/servicepoint/user/",
+		type: "GET",
+		success: function (data) {
+			$("#usrnm").text(data["fullName"]);
+			$(".img-circle").attr(
+				"src",
+				"assets/images/propfile/" + userName + ".jpg",
+			);
+		},
 	});
 });

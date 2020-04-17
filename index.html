@@ -144,7 +144,7 @@
 			<header class="main-header">
 				<div class="container_header">
 					<div class="logo d-flex align-items-center">
-						<a href="#">
+						<a href="/">
 							<strong class="logo_icon">
 								<img src="assets/ico" alt="" />
 							</strong>
@@ -166,21 +166,15 @@
 						<div class="row d-flex align-items-center min-h pos-md-r suples">
 							<div class="col-xl-12 col-9 d-flex justify-content-end">
 								<div class="right_bar_top d-flex align-items-center">
-									<!-- notification_Start -->
-
-									<!-- notification_End -->
-
-									<!-- DropDown_Inbox -->
-
-									<!--DropDown_Inbox_End -->
-
-									<!-- Dropdown_User -->
-									<a class="logout" href="#">Logout</a>
-									<a class="home-to">
+									<a
+										class="logout"
+										onclick="return qmatic.common.logout();"
+										href="/logout.jsp"
+										>Logout</a
+									>
+									<a class="home-to" href="/">
 										<img src="assets/images/icon/home.png" alt="" />
 									</a>
-
-									<!-- Dropdown_User_End -->
 								</div>
 							</div>
 						</div>
@@ -204,7 +198,7 @@
 						</div>
 
 						<div class="info">
-							<p>
+							<p id="usrnm">
 								Alexander Pierce
 							</p>
 						</div>
@@ -361,9 +355,7 @@
 								</ul>
 								<div class="content">
 									<div class="text-center mb-2">
-										<h1 id="title" class="display-4 pt-3 pb-3">
-											013442 - Adil Abdullayev - Emeliyyat!
-										</h1>
+										<h1 id="title" class="display-4 pt-3 pb-3"></h1>
 									</div>
 
 									<div id="card-list-top" class="d-flex justify-content-center">
@@ -459,11 +451,9 @@
 						<div class="copy_right">
 							<p>
 								2020 © Qmatic Dashboard By
-
-								<a href="#">TexnoLink</a>
+								<a>Technolink</a>
 							</p>
 						</div>
-
 						<a id="back-to-top" href="#">
 							<i class="ion-android-arrow-up"></i>
 						</a>

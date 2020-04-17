@@ -215,6 +215,7 @@ const drowCards = () => {
 	});
 	document.getElementsByClassName("cards")[0].innerHTML = cards;
 };
+
 const queue = (item) => {
 	return `
 		<tr>
