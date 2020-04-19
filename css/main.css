@@ -339,3 +339,6 @@ body {
 	margin-left: 10px;
 }
 /*# sourceMappingURL=main.css.map */
+.dropdown-item {
+	padding-left: 0;
+}
