@@ -21,9 +21,9 @@ const trueNames = {
 		icon: "fa-bookmark",
 	},
 	freeTC: {
-		name: "Free TC",
+		name: "Free Time Count",
 		fullName: "Reject count",
-		icon: "fa-bookmark",
+		icon: "fa-history",
 	},
 	totalSessionTime: {
 		name: "TST",
@@ -33,36 +33,36 @@ const trueNames = {
 	totalFreeTime: {
 		name: "TFT",
 		fullName: "Avg waiting time",
-		icon: "fa-bookmark",
+		icon: "fa-hourglass-o",
 	},
 	served: {
 		name: "Served",
 		fullName: "Avg serving time",
-		icon: "fa-bookmark",
+		icon: "fa-handshake-o",
 	},
 	walkDirect: {
 		name: "Walk direct",
-		icon: "fa-bookmark",
+		icon: "fa-blind",
 	},
 	noShow: {
 		name: "No show",
 		fullName: "Max serving time",
-		icon: "fa-bookmark",
+		icon: "fa-user-o",
 	},
 	rejected: {
 		name: "Rejeceted",
 		fullName: "First ticket time",
-		icon: "fa-bookmark",
+		icon: "fa-frown-o",
 	},
 	averageServingTime: {
 		name: "AST",
 		fullName: "Last ticket time",
-		icon: "fa-bookmark",
+		icon: "fa-hourglass-half",
 	},
 	totalServingTime: {
 		name: "TST",
 		fullName: "Last ticket time",
-		icon: "fa-bookmark",
+		icon: "fa-hourglass",
 	},
 };
 const topTable = [
