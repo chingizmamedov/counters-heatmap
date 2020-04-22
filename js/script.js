@@ -75,7 +75,7 @@ const topTable = [
 const nameTips = ["kassa", "emeliyyat", "huquqi", "satish", "rehberlik"];
 const additionalBottomcards = ["totalFreeTime", "freeTC"];
 const mainLink = "/heatmap";
-const BASE_URL = "http://192.168.1.69:8080/QmaticMap/";
+const BASE_URL = "http://10.0.22.36:8080/QmaticMap/";
 const GET_POINTS = "getServicePointsData?branchId=";
 const GET_DATA = "getCountersData";
 const QMATIC_GET_PERCENT = "getMapPercentData";
@@ -605,7 +605,7 @@ $(function () {
 			$("#usrnm").text(data["fullName"]);
 			$(".img-circle").attr(
 				"src",
-				"assets/images/propfile/" + userName + ".jpg",
+				"/heatmap/assets/images/profile/" + data["userName"] + ".jpg",
 			);
 		},
 	});
