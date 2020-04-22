@@ -220,7 +220,7 @@ body {
 .card-item-preloader {
 	-webkit-animation: blur 1.8s infinite;
 	animation: blur 1.8s infinite;
-	background: #8d4654;
+	background: #d8d8d8;
 	opacity: 0.6;
 }
 
@@ -314,7 +314,7 @@ body {
 	height: 200px;
 	-webkit-animation: blur 1.8s infinite;
 	animation: blur 1.8s infinite;
-	background: #8d4654;
+	background: #d8d8d8;
 	opacity: 0.6;
 }
 
