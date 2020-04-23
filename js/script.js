@@ -246,7 +246,7 @@ const drowPoints = (points) => {
 const cardName = (cardData, item) =>
 	`${
 		cardData[item] === null
-			? "no data"
+			? "---"
 			: cardData[item].length > 10
 			? cardData[item].slice(0, 10) + "..."
 			: cardData[item]
@@ -269,12 +269,12 @@ const cardWrap = (cardInner) => `
 
 const card = (name, number, icon) =>
 	cardWrap(`
-		<div class="col-12">
+		<div class="col-12" id="${name}">
 			<p class="card-subtitle text-muted fw-500">
 				${name}
 			</p>
 			<h3 class="text-success mt-2" id="customersWaiting">
-				${number !== null ? number : "no"}
+				${number !== null ? number : "---"}
 			</h3>
 			<div class="left-card-icon">
 				<i class="fa ${icon}" aria-hidden="true"></i>
@@ -373,6 +373,20 @@ const drowUI = (params) => {
 	drowQueuesTop();
 };
 
+const addTippy = () => {
+	console.log("fte", tippy);
+	tippy("#TFT", {
+		content: "Total free time",
+	});
+	tippy("#AST", {
+		content: "Average serving time",
+	});
+	TST;
+	tippy("#TST", {
+		content: "Total serving time",
+	});
+};
+
 const getCircle = () => {
 	fetchPoints().then((result) => {
 		switchOpenPoint(result);
@@ -383,9 +397,9 @@ const getCircle = () => {
 				drowUI(result.data);
 			}
 			for (let i = 0; i < 40; i++) {
-				// console.log("i", i);
 				clearTimeout(timerId);
 			}
+			addTippy();
 			timerId = setTimeout(getCircle, 7000);
 		});
 	});
